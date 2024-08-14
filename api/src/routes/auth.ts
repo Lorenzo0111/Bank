@@ -1,6 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { hashSync, verifySync } from "@node-rs/argon2";
 import { Hono } from "hono";
+import { optimizeImage } from "../lib/images";
 import { signToken } from "../lib/jwt";
 import { prisma } from "../lib/prisma";
 import { type Variables, authenticated } from "../middlewares/auth";
@@ -74,4 +75,26 @@ export const authRoute = new Hono<{ Variables: Variables }>()
   .get("/me", authenticated, async (ctx) => {
     const user = ctx.get("user");
     return ctx.json(user);
+  })
+  .patch("/me/image", authenticated, async (ctx) => {
+    const user = ctx.get("user");
+    const body = await ctx.req.formData();
+
+    const image = body.get("image");
+    if (!image || !(image instanceof Blob))
+      return ctx.json({ message: "Invalid image" }, 400);
+
+    const buffer = await image.arrayBuffer();
+    const base64 = (await optimizeImage(Buffer.from(buffer))).toString(
+      "base64",
+    );
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        image: base64,
+      },
+    });
+
+    return ctx.json({ message: "Image updated" });
   });
