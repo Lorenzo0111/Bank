@@ -79,7 +79,7 @@
         "noUnusedImports": "warn"
       }
     },
-    "ignore": ["**/metro.config.js", "android/app/build"]
+    "ignore": ["**/dist/**", "app/src/routeTree.gen.ts"]
   },
   "javascript": {
     "formatter": {

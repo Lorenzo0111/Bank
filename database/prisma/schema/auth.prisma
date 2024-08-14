@@ -5,6 +5,7 @@ model User {
     birthdate DateTime
     image     String?
 
+    username String @unique
     email    String @unique
     password String
 

@@ -27,12 +27,14 @@ export const transactionsRoute = new Hono<{ Variables: Variables }>()
           select: {
             id: true,
             name: true,
+            username: true,
           },
         },
         target: {
           select: {
             id: true,
             name: true,
+            username: true,
           },
         },
       },

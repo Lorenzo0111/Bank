@@ -16,6 +16,7 @@ export const usersRoute = new Hono<{ Variables: Variables }>()
       select: {
         id: true,
         name: true,
+        username: true,
       },
     });
 
@@ -75,4 +76,47 @@ export const usersRoute = new Hono<{ Variables: Variables }>()
     return stream(ctx, async (s) => {
       await s.write(resizedImage);
     });
+  })
+  .get("/username/:username", authenticated, async (ctx) => {
+    const username = ctx.req.param("username");
+
+    const user = await prisma.user.findUnique({
+      where: {
+        username: username.toLowerCase(),
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    if (!user) {
+      return ctx.json(
+        {
+          error: "User not found",
+        },
+        404,
+      );
+    }
+
+    return ctx.json(user);
+  })
+  .get("/search", authenticated, async (ctx) => {
+    const query = ctx.req.query("query");
+
+    const users = await prisma.user.findMany({
+      where: {
+        username: {
+          contains: query,
+          mode: "insensitive",
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+      },
+    });
+
+    return ctx.json(users);
   });
