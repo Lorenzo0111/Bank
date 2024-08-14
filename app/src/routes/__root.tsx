@@ -1,6 +1,13 @@
-import { SessionProvider } from "@/components/contexts/SessionContext";
+import {
+  SessionProvider,
+  useSession,
+} from "@/components/contexts/SessionContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Outlet, createRootRoute } from "@tanstack/react-router";
+import {
+  Outlet,
+  createRootRoute,
+  useRouterState,
+} from "@tanstack/react-router";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,8 +25,23 @@ function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider>
-        <Outlet />
+        <LayoutProtector />
       </SessionProvider>
     </QueryClientProvider>
   );
+}
+
+function LayoutProtector() {
+  const { session } = useSession();
+  const navigate = Route.useNavigate();
+  const router = useRouterState();
+
+  if (!session && !router.location.pathname.startsWith("/auth")) {
+    navigate({
+      to: "/auth/login",
+    });
+    return null;
+  }
+
+  return <Outlet />;
 }

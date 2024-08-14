@@ -17,6 +17,8 @@ import { Route as rootRoute } from "./routes/__root";
 // Create Virtual Routes
 
 const IndexLazyImport = createFileRoute("/")();
+const AuthLogoutLazyImport = createFileRoute("/auth/logout")();
+const AuthLoginLazyImport = createFileRoute("/auth/login")();
 
 // Create/Update Routes
 
@@ -24,6 +26,16 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: "/",
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import("./routes/index.lazy").then((d) => d.Route));
+
+const AuthLogoutLazyRoute = AuthLogoutLazyImport.update({
+  path: "/auth/logout",
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import("./routes/auth/logout.lazy").then((d) => d.Route));
+
+const AuthLoginLazyRoute = AuthLoginLazyImport.update({
+  path: "/auth/login",
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import("./routes/auth/login.lazy").then((d) => d.Route));
 
 // Populate the FileRoutesByPath interface
 
@@ -36,12 +48,30 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof IndexLazyImport;
       parentRoute: typeof rootRoute;
     };
+    "/auth/login": {
+      id: "/auth/login";
+      path: "/auth/login";
+      fullPath: "/auth/login";
+      preLoaderRoute: typeof AuthLoginLazyImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/auth/logout": {
+      id: "/auth/logout";
+      path: "/auth/logout";
+      fullPath: "/auth/logout";
+      preLoaderRoute: typeof AuthLogoutLazyImport;
+      parentRoute: typeof rootRoute;
+    };
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({ IndexLazyRoute });
+export const routeTree = rootRoute.addChildren({
+  IndexLazyRoute,
+  AuthLoginLazyRoute,
+  AuthLogoutLazyRoute,
+});
 
 /* prettier-ignore-end */
 
@@ -51,11 +81,19 @@ export const routeTree = rootRoute.addChildren({ IndexLazyRoute });
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/auth/login",
+        "/auth/logout"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/auth/login": {
+      "filePath": "auth/login.lazy.tsx"
+    },
+    "/auth/logout": {
+      "filePath": "auth/logout.lazy.tsx"
     }
   }
 }
