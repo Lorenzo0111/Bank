@@ -1,0 +1,20 @@
+{
+  "name": "bank",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "biome check",
+    "prepare": "husky"
+  },
+  "workspaces": ["api", "database"],
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.9",
+    "turbo": "^2.0.12"
+  },
+  "lint-staged": {
+    "*": ["biome check --no-errors-on-unmatched --files-ignore-unknown=true"]
+  },
+  "packageManager": "yarn@4.2.2"
+}
