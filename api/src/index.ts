@@ -2,6 +2,7 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { authRoute } from "./routes/auth";
+import { transactionsRoute } from "./routes/transactions";
 
 const app = new Hono()
   .use(
@@ -13,7 +14,8 @@ const app = new Hono()
       maxAge: 600,
     }),
   )
-  .route("/auth", authRoute);
+  .route("/auth", authRoute)
+  .route("/transactions", transactionsRoute);
 
 serve(app, (info) => {
   console.log(`[Server] Listening on ${info.address}:${info.port}`);

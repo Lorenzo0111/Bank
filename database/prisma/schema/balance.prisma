@@ -1,0 +1,16 @@
+model Transaction {
+    id String @id @default(cuid())
+
+    amount      Decimal
+    description String?
+
+    date DateTime @default(now())
+
+    target   User   @relation("received", fields: [targetId], references: [id], onDelete: Cascade)
+    targetId String
+
+    source   User   @relation("sent", fields: [sourceId], references: [id], onDelete: Cascade)
+    sourceId String
+
+    @@map("transactions")
+}
