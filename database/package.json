@@ -5,7 +5,7 @@
   "exports": {
     ".": {
       "import": "./src/index.ts",
-      "require": "./dist/src/index.js"
+      "require": "./dist/index.js"
     },
     "./types": "./src/types.ts"
   },

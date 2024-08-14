@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import { type FileRoutesByPath, useRouterState } from "@tanstack/react-router";
 import { Home, LogOut } from "lucide-react";
-import { useSession } from "../contexts/SessionContext";
 import { ButtonLink } from "./button";
 import { ThemeSwitch } from "./theme-switch";
 
@@ -35,16 +34,15 @@ export function SidebarLink({
   );
 }
 
-export function Sidebar() {
-  const { session } = useSession();
-  if (!session) return null;
-
+export function Sidebar({ loggedIn }: { loggedIn: boolean }) {
   return (
     <nav className="flex h-screen w-20 flex-col items-center gap-3 border-r py-4">
       <SidebarLink href="/" icon={<Home size={24} />} />
 
       <ThemeSwitch className="mt-auto" />
-      <SidebarLink href="/auth/logout" icon={<LogOut size={24} />} />
+      {loggedIn && (
+        <SidebarLink href="/auth/logout" icon={<LogOut size={24} />} />
+      )}
     </nav>
   );
 }

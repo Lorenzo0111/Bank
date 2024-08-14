@@ -33,11 +33,17 @@ export function SessionProvider({ children }: PropsWithChildren) {
     queryFn: async () => {
       if (!token) return null;
 
-      return authenticatedHonoClient(token)
+      const session = await authenticatedHonoClient(token)
         .auth.me.$get()
         .then((res) => res.json());
+
+      if ("error" in session)
+        throw new Error((session as { error: string }).error);
+
+      return session;
     },
     staleTime: 1000 * 60 * 5,
+    retry: false,
   });
 
   useEffect(() => {

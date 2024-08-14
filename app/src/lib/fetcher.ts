@@ -6,7 +6,7 @@ export const authenticatedHonoClient = (token: string | null) => {
   const headers: any = {};
   if (token) headers.Authorization = `Bearer ${token}`;
 
-  return hc<AppType>(process.env.VITE_API_URL as string, {
+  return hc<AppType>(import.meta.env.VITE_API_URL as string, {
     headers: {
       ...headers,
       "User-Agent": "Bank/1.0.0",

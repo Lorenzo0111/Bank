@@ -63,7 +63,7 @@ function ButtonLink({
 } & ButtonProps) {
   return (
     <Button asChild {...props}>
-      <Link href={href}>{children}</Link>
+      <Link to={href}>{children}</Link>
     </Button>
   );
 }

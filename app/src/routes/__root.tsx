@@ -2,6 +2,8 @@ import {
   SessionProvider,
   useSession,
 } from "@/components/contexts/SessionContext";
+import { Sidebar } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/toaster";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -32,9 +34,11 @@ function RootLayout() {
 }
 
 function LayoutProtector() {
-  const { session } = useSession();
+  const { session, isLoading } = useSession();
   const navigate = Route.useNavigate();
   const router = useRouterState();
+
+  if (isLoading) return null;
 
   if (!session && !router.location.pathname.startsWith("/auth")) {
     navigate({
@@ -43,5 +47,11 @@ function LayoutProtector() {
     return null;
   }
 
-  return <Outlet />;
+  return (
+    <main className="flex min-h-screen w-full bg-background antialiased">
+      <Sidebar loggedIn={!!session} />
+      <Outlet />
+      <Toaster />
+    </main>
+  );
 }
