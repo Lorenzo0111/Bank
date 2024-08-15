@@ -9,13 +9,14 @@ import { loginSchema, registerSchema } from "../schemas";
 
 export const authRoute = new Hono<{ Variables: Variables }>()
   .post("/register", zValidator("json", registerSchema), async (ctx) => {
-    const body = ctx.req.valid("json");
+    const { confirm_password, ...body } = ctx.req.valid("json");
 
     try {
       const hashedPassword = hashSync(body.password);
       const user = await prisma.user.create({
         data: {
           ...body,
+          birthdate: new Date(body.birthdate),
           password: hashedPassword,
         },
       });

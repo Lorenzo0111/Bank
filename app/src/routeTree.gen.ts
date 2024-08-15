@@ -17,6 +17,7 @@ import { Route as rootRoute } from "./routes/__root";
 // Create Virtual Routes
 
 const IndexLazyImport = createFileRoute("/")();
+const AuthRegisterLazyImport = createFileRoute("/auth/register")();
 const AuthLogoutLazyImport = createFileRoute("/auth/logout")();
 const AuthLoginLazyImport = createFileRoute("/auth/login")();
 
@@ -26,6 +27,13 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: "/",
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import("./routes/index.lazy").then((d) => d.Route));
+
+const AuthRegisterLazyRoute = AuthRegisterLazyImport.update({
+  path: "/auth/register",
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import("./routes/auth/register.lazy").then((d) => d.Route),
+);
 
 const AuthLogoutLazyRoute = AuthLogoutLazyImport.update({
   path: "/auth/logout",
@@ -62,6 +70,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthLogoutLazyImport;
       parentRoute: typeof rootRoute;
     };
+    "/auth/register": {
+      id: "/auth/register";
+      path: "/auth/register";
+      fullPath: "/auth/register";
+      preLoaderRoute: typeof AuthRegisterLazyImport;
+      parentRoute: typeof rootRoute;
+    };
   }
 }
 
@@ -71,6 +86,7 @@ export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   AuthLoginLazyRoute,
   AuthLogoutLazyRoute,
+  AuthRegisterLazyRoute,
 });
 
 /* prettier-ignore-end */
@@ -83,7 +99,8 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/auth/login",
-        "/auth/logout"
+        "/auth/logout",
+        "/auth/register"
       ]
     },
     "/": {
@@ -94,6 +111,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/auth/logout": {
       "filePath": "auth/logout.lazy.tsx"
+    },
+    "/auth/register": {
+      "filePath": "auth/register.lazy.tsx"
     }
   }
 }
