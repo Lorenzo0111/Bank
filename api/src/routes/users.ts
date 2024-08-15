@@ -37,6 +37,55 @@ export const usersRoute = new Hono<{ Variables: Variables }>()
 
     return ctx.json(mergedFriends);
   })
+  .put("/friends/:id", authenticated, async (ctx) => {
+    const user = ctx.get("user");
+    const id = ctx.req.param("id");
+
+    if (user.id === id)
+      return ctx.json({ error: "You can't add yourself as a friend" }, 400);
+
+    const friend = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!friend) return ctx.json({ error: "User not found" }, 404);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        friends: {
+          connect: {
+            id,
+          },
+        },
+      },
+    });
+
+    return ctx.json({ message: "Friend added" });
+  })
+  .delete("/friends/:id", authenticated, async (ctx) => {
+    const user = ctx.get("user");
+    const id = ctx.req.param("id");
+
+    const friend = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!friend) return ctx.json({ error: "User not found" }, 404);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        friends: {
+          disconnect: {
+            id,
+          },
+        },
+      },
+    });
+
+    return ctx.json({ message: "Friend removed" });
+  })
   .get("/search", authenticated, async (ctx) => {
     const query = ctx.req.query("query");
 

@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { honoClient } from "@/lib/fetcher";
 import { useQuery } from "@tanstack/react-query";
@@ -22,25 +23,29 @@ function Friends() {
   });
 
   return (
-    <div className="flex w-full flex-col gap-3 p-4">
-      {data?.map((friend) => (
-        <Card key={friend.id}>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-3">
-              <Avatar>
-                <AvatarImage
-                  src={`${import.meta.env.VITE_API_URL}/users/${friend.id}/image`}
-                />
-                <AvatarFallback>
-                  {friend.username.slice(0, 1).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
+    <div className="flex w-full flex-col gap-3">
+      <Button>Add friend</Button>
 
-              <span>{friend.username}</span>
-            </CardTitle>
-          </CardHeader>
-        </Card>
-      ))}
+      <div className="flex flex-col gap-3 p-4">
+        {data?.map((friend) => (
+          <Card key={friend.id}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <Avatar>
+                  <AvatarImage
+                    src={`${import.meta.env.VITE_API_URL}/users/${friend.id}/image`}
+                  />
+                  <AvatarFallback>
+                    {friend.username.slice(0, 1).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+
+                <span>{friend.username}</span>
+              </CardTitle>
+            </CardHeader>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }

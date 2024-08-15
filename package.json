@@ -2,6 +2,7 @@
   "name": "bank",
   "scripts": {
     "dev": "turbo dev",
+    "start": "turbo start",
     "build": "turbo build",
     "lint": "biome check",
     "prepare": "husky"
