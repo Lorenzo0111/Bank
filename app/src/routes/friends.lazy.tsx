@@ -1,5 +1,5 @@
+import { AddFriend } from "@/components/dialogs/AddFriend";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { honoClient } from "@/lib/fetcher";
 import { useQuery } from "@tanstack/react-query";
@@ -10,7 +10,7 @@ export const Route = createLazyFileRoute("/friends")({
 });
 
 function Friends() {
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["friends"],
     queryFn: async () => {
       const res = await honoClient.users.friends.$get();
@@ -23,12 +23,12 @@ function Friends() {
   });
 
   return (
-    <div className="flex w-full flex-col gap-3">
-      <Button>Add friend</Button>
+    <div className="flex w-full flex-col gap-3 p-4">
+      <AddFriend refetch={refetch} />
 
-      <div className="flex flex-col gap-3 p-4">
+      <div className="flex flex-col gap-3">
         {data?.map((friend) => (
-          <Card key={friend.id}>
+          <Card key={friend.id} className="w-52">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
                 <Avatar>
