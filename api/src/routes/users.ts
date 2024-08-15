@@ -6,6 +6,80 @@ import { prisma } from "../lib/prisma";
 import { type Variables, authenticated } from "../middlewares/auth";
 
 export const usersRoute = new Hono<{ Variables: Variables }>()
+  .get("/friends", authenticated, async (ctx) => {
+    const user = ctx.get("user");
+    const friends = await prisma.user.findUnique({
+      where: { id: user.id },
+      select: {
+        friendOf: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+          },
+        },
+        friends: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+          },
+        },
+      },
+    });
+
+    if (!friends) return ctx.json({ error: "User not found" }, 404);
+
+    let mergedFriends = [...friends.friendOf, ...friends.friends];
+    mergedFriends = mergedFriends.filter(
+      (v, i, a) => a.findIndex((t) => t.id === v.id) === i,
+    );
+
+    return ctx.json(mergedFriends);
+  })
+  .get("/search", authenticated, async (ctx) => {
+    const query = ctx.req.query("query");
+
+    const users = await prisma.user.findMany({
+      where: {
+        username: {
+          contains: query,
+          mode: "insensitive",
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+      },
+    });
+
+    return ctx.json(users);
+  })
+  .get("/username/:username", authenticated, async (ctx) => {
+    const username = ctx.req.param("username");
+
+    const user = await prisma.user.findUnique({
+      where: {
+        username: username.toLowerCase(),
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    if (!user) {
+      return ctx.json(
+        {
+          error: "User not found",
+        },
+        404,
+      );
+    }
+
+    return ctx.json(user);
+  })
   .get("/:id", authenticated, async (ctx) => {
     const id = ctx.req.param("id");
 
@@ -76,47 +150,4 @@ export const usersRoute = new Hono<{ Variables: Variables }>()
     return stream(ctx, async (s) => {
       await s.write(resizedImage);
     });
-  })
-  .get("/username/:username", authenticated, async (ctx) => {
-    const username = ctx.req.param("username");
-
-    const user = await prisma.user.findUnique({
-      where: {
-        username: username.toLowerCase(),
-      },
-      select: {
-        id: true,
-        name: true,
-      },
-    });
-
-    if (!user) {
-      return ctx.json(
-        {
-          error: "User not found",
-        },
-        404,
-      );
-    }
-
-    return ctx.json(user);
-  })
-  .get("/search", authenticated, async (ctx) => {
-    const query = ctx.req.query("query");
-
-    const users = await prisma.user.findMany({
-      where: {
-        username: {
-          contains: query,
-          mode: "insensitive",
-        },
-      },
-      select: {
-        id: true,
-        name: true,
-        username: true,
-      },
-    });
-
-    return ctx.json(users);
   });
