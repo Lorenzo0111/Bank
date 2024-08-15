@@ -7,18 +7,49 @@ import { transactionSchema } from "../schemas";
 export const transactionsRoute = new Hono<{ Variables: Variables }>()
   .get("/", authenticated, async (ctx) => {
     const user = ctx.get("user");
+    const query = ctx.req.query("query");
     const sort = ctx.req.query("sort") === "asc" ? "asc" : "desc";
     const limit = Number.parseInt(ctx.req.query("limit") || "0");
     const offset = Number.parseInt(ctx.req.query("offset") || "0");
 
     const transactions = await prisma.transaction.findMany({
       where: {
-        OR: [
+        AND: [
           {
-            sourceId: user.id,
+            OR: [
+              {
+                sourceId: user.id,
+              },
+              {
+                targetId: user.id,
+              },
+            ],
           },
           {
-            targetId: user.id,
+            OR: [
+              {
+                source: {
+                  name: {
+                    contains: query,
+                    mode: "insensitive",
+                  },
+                },
+              },
+              {
+                target: {
+                  name: {
+                    contains: query,
+                    mode: "insensitive",
+                  },
+                },
+              },
+              {
+                description: {
+                  contains: query,
+                  mode: "insensitive",
+                },
+              },
+            ],
           },
         ],
       },
