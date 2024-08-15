@@ -22,7 +22,7 @@ export const transactionsRoute = new Hono<{ Variables: Variables }>()
           },
         ],
       },
-      select: {
+      include: {
         source: {
           select: {
             id: true,

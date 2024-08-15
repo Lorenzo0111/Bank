@@ -1,3 +1,11 @@
+import { TransactionsTable } from "@/components/cards/Transactions";
+import { useSession } from "@/components/contexts/SessionContext";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { createLazyFileRoute } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/")({
@@ -5,9 +13,18 @@ export const Route = createLazyFileRoute("/")({
 });
 
 function Index() {
+  const { session } = useSession();
+
   return (
-    <div className="p-2">
-      <h3>Welcome!</h3>
+    <div className="flex w-full flex-col gap-3 p-4">
+      <Card className="w-52">
+        <CardHeader>
+          <CardTitle>€{session?.balance || 0}</CardTitle>
+          <CardDescription>Current balance</CardDescription>
+        </CardHeader>
+      </Card>
+
+      <TransactionsTable />
     </div>
   );
 }
