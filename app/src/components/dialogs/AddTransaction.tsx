@@ -15,7 +15,7 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { useToast } from "../ui/use-toast";
 
-export function NewTransaction({
+export function AddTransaction({
   children,
   target,
 }: { children?: ReactNode; target?: string }) {

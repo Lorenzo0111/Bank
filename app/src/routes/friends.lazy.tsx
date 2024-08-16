@@ -1,5 +1,5 @@
 import { AddFriend } from "@/components/dialogs/AddFriend";
-import { NewTransaction } from "@/components/dialogs/NewTransaction";
+import { AddTransaction } from "@/components/dialogs/AddTransaction";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { honoClient } from "@/lib/fetcher";
@@ -29,7 +29,7 @@ function Friends() {
 
       <div className="flex flex-wrap gap-3">
         {data?.map((friend) => (
-          <NewTransaction key={friend.id} target={friend.username}>
+          <AddTransaction key={friend.id} target={friend.username}>
             <Card key={friend.id} className="w-52">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
@@ -46,7 +46,7 @@ function Friends() {
                 </CardTitle>
               </CardHeader>
             </Card>
-          </NewTransaction>
+          </AddTransaction>
         ))}
       </div>
     </div>

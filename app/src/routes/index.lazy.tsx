@@ -1,7 +1,7 @@
 import { TransactionsTable } from "@/components/cards/Transactions";
 import { BalanceChart } from "@/components/charts/BalanceChart";
 import { useSession } from "@/components/contexts/SessionContext";
-import { NewTransaction } from "@/components/dialogs/NewTransaction";
+import { AddTransaction } from "@/components/dialogs/AddTransaction";
 import {
   Card,
   CardContent,
@@ -32,7 +32,7 @@ function Index() {
           </CardContent>
         </Card>
 
-        <NewTransaction />
+        <AddTransaction />
       </div>
 
       <TransactionsTable />
