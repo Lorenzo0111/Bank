@@ -49,4 +49,14 @@ export const cardsRoute = new Hono<{ Variables: Variables }>()
       pin,
       expiry,
     });
+  })
+  .delete("/:number", authenticated, async (ctx) => {
+    const user = ctx.get("user");
+    const number = ctx.req.param("number");
+
+    await prisma.card.delete({
+      where: { userId: user.id, number },
+    });
+
+    return ctx.json({ message: "Card deleted" });
   });

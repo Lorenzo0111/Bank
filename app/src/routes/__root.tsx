@@ -48,7 +48,9 @@ function LayoutProtector() {
   }
 
   return (
-    <main className="flex min-h-screen w-full bg-background antialiased">
+    <main
+      className={"flex min-h-screen w-full bg-background font-sans antialiased"}
+    >
       <Sidebar loggedIn={!!session} />
       <Outlet />
       <Toaster />

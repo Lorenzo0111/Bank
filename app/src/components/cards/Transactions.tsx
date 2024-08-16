@@ -23,7 +23,7 @@ import {
 export function TransactionsTable() {
   const { session } = useSession();
   const [query, setQuery] = useState("");
-  const [sort, setSort] = useState("asc");
+  const [sort, setSort] = useState("desc");
   const { data } = useQuery({
     queryKey: ["transactions", query, sort],
     queryFn: () =>
