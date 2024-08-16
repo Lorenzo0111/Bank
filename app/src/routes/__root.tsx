@@ -2,6 +2,7 @@ import {
   SessionProvider,
   useSession,
 } from "@/components/contexts/SessionContext";
+import { ThemeProvider } from "@/components/contexts/ThemeContext";
 import { Sidebar } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -27,7 +28,9 @@ function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider>
-        <LayoutProtector />
+        <ThemeProvider>
+          <LayoutProtector />
+        </ThemeProvider>
       </SessionProvider>
     </QueryClientProvider>
   );

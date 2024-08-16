@@ -25,7 +25,9 @@ export function AddTransaction({
   return (
     <Dialog>
       <DialogTrigger asChild={!children}>
-        {children || <Button className="ml-auto w-1/4">New transaction</Button>}
+        {children || (
+          <Button className="lg:ml-auto lg:w-1/4">New transaction</Button>
+        )}
       </DialogTrigger>
 
       <DialogContent>

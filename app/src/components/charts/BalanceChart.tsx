@@ -28,8 +28,6 @@ export function BalanceChart() {
 
     const items = data.reduce(
       (acc, { date, balance }) => {
-        console.log(date, balance);
-
         const key =
           type === "day" ? new Date(date).getDate() : new Date(date).getMonth();
         acc[key] = acc[key]
@@ -61,8 +59,6 @@ export function BalanceChart() {
       balance: items[key - 1],
     }));
   }, [data, type]);
-
-  console.log(chartData);
 
   return (
     <LineChart

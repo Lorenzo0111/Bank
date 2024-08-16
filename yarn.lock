@@ -1554,7 +1554,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-dialog@npm:^1.1.1":
+"@radix-ui/react-dialog@npm:^1.0.4, @radix-ui/react-dialog@npm:^1.1.1":
   version: 1.1.1
   resolution: "@radix-ui/react-dialog@npm:1.1.1"
   dependencies:
@@ -1960,7 +1960,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-visually-hidden@npm:1.1.0":
+"@radix-ui/react-visually-hidden@npm:1.1.0, @radix-ui/react-visually-hidden@npm:^1.1.0":
   version: 1.1.0
   resolution: "@radix-ui/react-visually-hidden@npm:1.1.0"
   dependencies:
@@ -5845,6 +5845,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vaul@npm:^0.9.1":
+  version: 0.9.1
+  resolution: "vaul@npm:0.9.1"
+  dependencies:
+    "@radix-ui/react-dialog": "npm:^1.0.4"
+  peerDependencies:
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  checksum: 10c0/33fc4ab9554acdcb218fb5048f270607aaa3eb58909cf2e4300c1bca8ba8b989845500b9f116e62fde8d3f56a26e42bdd722a1e7fcd5a074a480b86d11612005
+  languageName: node
+  linkType: hard
+
 "victory-vendor@npm:^36.6.8":
   version: 36.9.2
   resolution: "victory-vendor@npm:36.9.2"
@@ -5922,6 +5934,7 @@ __metadata:
     "@radix-ui/react-select": "npm:^2.1.1"
     "@radix-ui/react-slot": "npm:^1.1.0"
     "@radix-ui/react-toast": "npm:^1.2.1"
+    "@radix-ui/react-visually-hidden": "npm:^1.1.0"
     "@tanstack/react-query": "npm:^5.51.23"
     "@tanstack/react-router": "npm:^1.48.1"
     "@tanstack/router-plugin": "npm:^1.47.0"
@@ -5947,6 +5960,7 @@ __metadata:
     tailwindcss-animate: "npm:^1.0.7"
     typescript: "npm:^5.5.4"
     unplugin-fonts: "npm:^1.1.1"
+    vaul: "npm:^0.9.1"
     vite: "npm:^5.4.0"
   languageName: unknown
   linkType: soft
