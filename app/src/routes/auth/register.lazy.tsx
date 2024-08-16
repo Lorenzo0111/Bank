@@ -51,33 +51,34 @@ function Register() {
               const password = form.get("password") as string;
               const confirm_password = form.get("confirm_password") as string;
 
-              const res = await honoClient.auth.register.$post({
-                json: {
-                  name,
-                  surname,
-                  birthdate,
-                  username,
-                  email,
-                  password,
-                  confirm_password,
-                },
-              });
+              try {
+                const res = await honoClient.auth.register.$post({
+                  json: {
+                    name,
+                    surname,
+                    birthdate,
+                    username,
+                    email,
+                    password,
+                    confirm_password,
+                  },
+                });
 
-              const data = await res.json();
-              if ("token" in data) {
+                const data = await res.json();
+                if ("error" in data) throw new Error(data.error);
+
                 login(data.token);
                 navigate({
                   to: "/",
                 });
-                return;
+              } catch (_) {
+                toast({
+                  title: "Invalid data",
+                  description:
+                    "Your email or username is already in use, or your passwords do not match",
+                  variant: "destructive",
+                });
               }
-
-              toast({
-                title: "Invalid data",
-                description:
-                  "Your email or username is already in use, or your passwords do not match",
-                variant: "destructive",
-              });
             }}
             className="flex flex-col gap-3"
           >

@@ -14,6 +14,7 @@ type SessionContextType = {
   isLoading: boolean;
   login: (token: string) => Promise<void>;
   logout: () => void;
+  refetch: () => void;
 };
 
 const SessionContext = createContext<SessionContextType | null>(null);
@@ -28,7 +29,11 @@ export function useSession() {
 
 export function SessionProvider({ children }: PropsWithChildren) {
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const { data: session, isLoading } = useQuery({
+  const {
+    data: session,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["session", token],
     queryFn: async () => {
       if (!token) return null;
@@ -55,6 +60,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
           setToken(token);
         },
         logout: () => setToken(null),
+        refetch,
       }}
     >
       {children}

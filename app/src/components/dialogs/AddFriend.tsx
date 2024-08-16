@@ -40,6 +40,7 @@ export function AddFriend({
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          required
         />
         <DialogFooter>
           <DialogClose asChild>

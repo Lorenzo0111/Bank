@@ -9,7 +9,7 @@ export const transactionsRoute = new Hono<{ Variables: Variables }>()
     const user = ctx.get("user");
     const query = ctx.req.query("query");
     const sort = ctx.req.query("sort") === "asc" ? "asc" : "desc";
-    const limit = Number.parseInt(ctx.req.query("limit") || "0");
+    const limit = Number.parseInt(ctx.req.query("limit") || "25");
     const offset = Number.parseInt(ctx.req.query("offset") || "0");
 
     const transactions = await prisma.transaction.findMany({
@@ -25,32 +25,34 @@ export const transactionsRoute = new Hono<{ Variables: Variables }>()
               },
             ],
           },
-          {
-            OR: [
-              {
-                source: {
-                  name: {
-                    contains: query,
-                    mode: "insensitive",
+          query?.trim().length
+            ? {
+                OR: [
+                  {
+                    source: {
+                      name: {
+                        contains: query,
+                        mode: "insensitive",
+                      },
+                    },
                   },
-                },
-              },
-              {
-                target: {
-                  name: {
-                    contains: query,
-                    mode: "insensitive",
+                  {
+                    target: {
+                      name: {
+                        contains: query,
+                        mode: "insensitive",
+                      },
+                    },
                   },
-                },
-              },
-              {
-                description: {
-                  contains: query,
-                  mode: "insensitive",
-                },
-              },
-            ],
-          },
+                  {
+                    description: {
+                      contains: query,
+                      mode: "insensitive",
+                    },
+                  },
+                ],
+              }
+            : {},
         ],
       },
       include: {
@@ -72,7 +74,7 @@ export const transactionsRoute = new Hono<{ Variables: Variables }>()
       orderBy: {
         date: sort,
       },
-      take: Math.min(limit, 50),
+      take: Math.min(limit, 25),
       skip: offset,
     });
 
@@ -87,13 +89,13 @@ export const transactionsRoute = new Hono<{ Variables: Variables }>()
       const body = ctx.req.valid("json");
 
       const target = await prisma.user.findUnique({
-        where: { id: body.target },
+        where: { username: body.target },
       });
 
-      if (!target) return ctx.json({ message: "User not found" }, 404);
+      if (!target) return ctx.json({ error: "User not found" }, 404);
 
       if (user.balance.minus(body.amount).isNegative())
-        return ctx.json({ message: "Insufficient balance" }, 403);
+        return ctx.json({ error: "Insufficient balance" }, 403);
 
       const [transaction] = await prisma.$transaction([
         prisma.transaction.create({

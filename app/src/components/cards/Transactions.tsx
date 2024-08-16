@@ -1,6 +1,8 @@
 import { honoClient } from "@/lib/fetcher";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 import { useState } from "react";
+import { useSession } from "../contexts/SessionContext";
 import { Input } from "../ui/input";
 import {
   Select,
@@ -19,6 +21,7 @@ import {
 } from "../ui/table";
 
 export function TransactionsTable() {
+  const { session } = useSession();
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState("asc");
   const { data } = useQuery({
@@ -27,7 +30,7 @@ export function TransactionsTable() {
       honoClient.transactions
         .$get({
           query: {
-            query,
+            query: query.trim().length > 0 ? query : undefined,
             sort,
           },
         })
@@ -67,10 +70,19 @@ export function TransactionsTable() {
         </TableHeader>
         <TableBody>
           {data?.map((transaction) => (
-            <TableRow key={transaction.id}>
-              <TableCell className="font-medium">{transaction.date}</TableCell>
+            <TableRow
+              key={transaction.id}
+              className={
+                transaction.targetId === session?.id
+                  ? "bg-primary"
+                  : "bg-destructive"
+              }
+            >
+              <TableCell className="font-medium">
+                {format(transaction.date, "dd/MM/yyyy")}
+              </TableCell>
               <TableCell>{transaction.amount}</TableCell>
-              <TableCell>{transaction.description ?? "N/A"}</TableCell>
+              <TableCell>{transaction.description || "N/A"}</TableCell>
               <TableCell className="text-right">
                 {transaction.source.name}
               </TableCell>

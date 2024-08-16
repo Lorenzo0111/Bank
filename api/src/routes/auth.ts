@@ -83,7 +83,7 @@ export const authRoute = new Hono<{ Variables: Variables }>()
 
     const image = body.get("image");
     if (!image || !(image instanceof Blob))
-      return ctx.json({ message: "Invalid image" }, 400);
+      return ctx.json({ error: "Invalid image" }, 400);
 
     const buffer = await image.arrayBuffer();
     const base64 = (await optimizeImage(Buffer.from(buffer))).toString(

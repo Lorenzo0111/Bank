@@ -43,27 +43,27 @@ function Login() {
               const form = new FormData(e.target as HTMLFormElement);
               const email = form.get("email") as string;
               const password = form.get("password") as string;
+              try {
+                const res = await honoClient.auth.login.$post({
+                  json: {
+                    email,
+                    password,
+                  },
+                });
 
-              const res = await honoClient.auth.login.$post({
-                json: {
-                  email,
-                  password,
-                },
-              });
+                const data = await res.json();
+                if ("error" in data) throw new Error(data.error);
 
-              const data = await res.json();
-              if ("token" in data) {
                 login(data.token);
                 navigate({
                   to: "/",
                 });
-                return;
+              } catch (_) {
+                toast({
+                  description: "Invalid email or password",
+                  variant: "destructive",
+                });
               }
-
-              toast({
-                description: "Invalid email or password",
-                variant: "destructive",
-              });
             }}
             className="flex flex-col gap-3"
           >
