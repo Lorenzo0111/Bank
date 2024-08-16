@@ -68,7 +68,7 @@ export function BalanceChart() {
     <LineChart
       title={
         <div className="flex w-full items-center justify-between">
-          <p>Balance over time</p>
+          <h3 className="font-semibold text-xl">Balance over time</h3>
 
           <Select value={type} onValueChange={setType}>
             <SelectTrigger className="w-[100px]">

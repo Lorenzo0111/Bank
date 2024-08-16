@@ -4,6 +4,7 @@ import { useSession } from "@/components/contexts/SessionContext";
 import { NewTransaction } from "@/components/dialogs/NewTransaction";
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -20,14 +21,17 @@ function Index() {
   return (
     <div className="flex w-full flex-col gap-3 p-4">
       <div className="flex w-full gap-3">
-        <Card className="h-fit w-52">
+        <Card className="h-fit w-96">
           <CardHeader>
             <CardTitle>€{session?.balance || 0}</CardTitle>
             <CardDescription>Current balance</CardDescription>
           </CardHeader>
+
+          <CardContent>
+            <BalanceChart />
+          </CardContent>
         </Card>
 
-        <BalanceChart />
         <NewTransaction />
       </div>
 

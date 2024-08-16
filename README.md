@@ -16,7 +16,7 @@
 
 Bank is a simple banking system that allows you to create accounts, transfer money and more.
 
-<img src="https://github.com/Lorenzo0111/Bank/blob/main/media/Dashboard.png?raw=true" height="400" />
+<img src="https://github.com/Lorenzo0111/Bank/blob/main/media/Dashboard.png?raw=true" />
 
 ## Deploying
 

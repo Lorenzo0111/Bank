@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { authRoute } from "./routes/auth";
 import { balanceRoute } from "./routes/balance";
+import { cardsRoute } from "./routes/cards";
 import { usersRoute } from "./routes/users";
 
 const app = new Hono()
@@ -17,7 +18,8 @@ const app = new Hono()
   )
   .route("/auth", authRoute)
   .route("/balance", balanceRoute)
-  .route("/users", usersRoute);
+  .route("/users", usersRoute)
+  .route("/cards", cardsRoute);
 
 serve(app, (info) => {
   console.log(`[Server] Listening on ${info.address}:${info.port}`);

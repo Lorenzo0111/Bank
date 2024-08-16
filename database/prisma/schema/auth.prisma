@@ -15,6 +15,8 @@ model User {
     sent     Transaction[] @relation("sent")
     received Transaction[] @relation("received")
 
+    cards Card[]
+
     friends  User[] @relation("friends")
     friendOf User[] @relation("friends")
 

@@ -52,45 +52,41 @@ export function BarChart(props: ChartProps) {
 
 export function LineChart(props: ChartProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{props.title}</CardTitle>
-      </CardHeader>
+    <div>
+      {props.title}
 
-      <CardContent>
-        <ChartContainer config={props.config} className="min-h-[200px] w-full">
-          <AreaChart
-            accessibilityLayer
-            data={props.data}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey={props.dataKey}
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
+      <ChartContainer config={props.config} className="min-h-[200px] w-full">
+        <AreaChart
+          accessibilityLayer
+          data={props.data}
+          margin={{
+            left: 12,
+            right: 12,
+          }}
+        >
+          <CartesianGrid vertical={false} />
+          <XAxis
+            dataKey={props.dataKey}
+            tickLine={false}
+            axisLine={false}
+            tickMargin={8}
+          />
+          <ChartTooltip
+            cursor={false}
+            content={<ChartTooltipContent indicator="line" />}
+          />
+          {props.keys.map((key) => (
+            <Area
+              key={key}
+              dataKey={key}
+              type="natural"
+              fill={`var(--color-${key})`}
+              fillOpacity={0.4}
+              stroke={`var(--color-${key})`}
             />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
-            />
-            {props.keys.map((key) => (
-              <Area
-                key={key}
-                dataKey={key}
-                type="natural"
-                fill={`var(--color-${key})`}
-                fillOpacity={0.4}
-                stroke={`var(--color-${key})`}
-              />
-            ))}
-          </AreaChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
+          ))}
+        </AreaChart>
+      </ChartContainer>
+    </div>
   );
 }

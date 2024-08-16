@@ -1,0 +1,12 @@
+model Card {
+    number String @id
+    name   String
+
+    expiry DateTime
+
+    cvc String
+    pin String
+
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
+}

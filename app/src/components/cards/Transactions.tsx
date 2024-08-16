@@ -74,8 +74,8 @@ export function TransactionsTable() {
               key={transaction.id}
               className={
                 transaction.targetId === session?.id
-                  ? "bg-primary"
-                  : "bg-destructive"
+                  ? "hover:bg-primary"
+                  : "hover:bg-destructive"
               }
             >
               <TableCell className="font-medium">

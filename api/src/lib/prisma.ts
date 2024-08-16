@@ -6,5 +6,9 @@ export const prisma = new PrismaClient({
       password: true,
       image: true,
     },
+    card: {
+      pin: true,
+      cvc: true,
+    },
   },
 });
