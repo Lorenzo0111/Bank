@@ -1,5 +1,6 @@
 import { honoClient } from "@/lib/fetcher";
 import { useQueryClient } from "@tanstack/react-query";
+import type { ReactNode } from "react";
 import { useSession } from "../contexts/SessionContext";
 import { Button } from "../ui/button";
 import {
@@ -15,15 +16,18 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { useToast } from "../ui/use-toast";
 
-export function NewTransaction() {
+export function NewTransaction({
+  children,
+  target,
+}: { children?: ReactNode; target?: string }) {
   const { refetch } = useSession();
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button className="w-1/4">New transaction</Button>
+      <DialogTrigger asChild={!children}>
+        {children || <Button className="ml-auto w-1/4">New transaction</Button>}
       </DialogTrigger>
 
       <DialogContent>
@@ -45,7 +49,7 @@ export function NewTransaction() {
             const description = form.get("description") as string;
 
             try {
-              await honoClient.transactions.new.$post({
+              await honoClient.balance.transactions.new.$post({
                 json: {
                   target,
                   amount: Number.parseInt(amount),
@@ -74,7 +78,13 @@ export function NewTransaction() {
             }
           }}
         >
-          <Input name="target" placeholder="Target Username" required />
+          <Input
+            name="target"
+            placeholder="Target Username"
+            value={target}
+            disabled={!!target}
+            required
+          />
           <Input name="amount" type="number" placeholder="Amount" required />
           <Textarea name="description" placeholder="(Optional) Description" />
 

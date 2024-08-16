@@ -9,7 +9,8 @@ model User {
     email    String @unique
     password String
 
-    balance Decimal @default(0)
+    balance  Decimal           @default(0)
+    snapshot BalanceSnapshot[]
 
     sent     Transaction[] @relation("sent")
     received Transaction[] @relation("received")

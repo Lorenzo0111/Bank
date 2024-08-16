@@ -27,7 +27,7 @@ export function TransactionsTable() {
   const { data } = useQuery({
     queryKey: ["transactions", query, sort],
     queryFn: () =>
-      honoClient.transactions
+      honoClient.balance.transactions
         .$get({
           query: {
             query: query.trim().length > 0 ? query : undefined,

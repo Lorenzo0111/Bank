@@ -1,4 +1,5 @@
 import { TransactionsTable } from "@/components/cards/Transactions";
+import { BalanceChart } from "@/components/charts/BalanceChart";
 import { useSession } from "@/components/contexts/SessionContext";
 import { NewTransaction } from "@/components/dialogs/NewTransaction";
 import {
@@ -18,7 +19,7 @@ function Index() {
 
   return (
     <div className="flex w-full flex-col gap-3 p-4">
-      <div className="flex justify-between">
+      <div className="flex w-full gap-3">
         <Card className="w-52">
           <CardHeader>
             <CardTitle>€{session?.balance || 0}</CardTitle>
@@ -26,6 +27,7 @@ function Index() {
           </CardHeader>
         </Card>
 
+        <BalanceChart />
         <NewTransaction />
       </div>
 

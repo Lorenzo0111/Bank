@@ -2,7 +2,7 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { authRoute } from "./routes/auth";
-import { transactionsRoute } from "./routes/transactions";
+import { balanceRoute } from "./routes/balance";
 import { usersRoute } from "./routes/users";
 
 const app = new Hono()
@@ -16,7 +16,7 @@ const app = new Hono()
     }),
   )
   .route("/auth", authRoute)
-  .route("/transactions", transactionsRoute)
+  .route("/balance", balanceRoute)
   .route("/users", usersRoute);
 
 serve(app, (info) => {

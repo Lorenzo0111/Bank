@@ -1,4 +1,5 @@
 import { AddFriend } from "@/components/dialogs/AddFriend";
+import { NewTransaction } from "@/components/dialogs/NewTransaction";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { honoClient } from "@/lib/fetcher";
@@ -26,24 +27,26 @@ function Friends() {
     <div className="flex w-full flex-col gap-3 p-4">
       <AddFriend refetch={refetch} />
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-wrap gap-3">
         {data?.map((friend) => (
-          <Card key={friend.id} className="w-52">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3">
-                <Avatar>
-                  <AvatarImage
-                    src={`${import.meta.env.VITE_API_URL}/users/${friend.id}/image`}
-                  />
-                  <AvatarFallback>
-                    {friend.username.slice(0, 1).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
+          <NewTransaction key={friend.id} target={friend.username}>
+            <Card key={friend.id} className="w-52">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-3">
+                  <Avatar>
+                    <AvatarImage
+                      src={`${import.meta.env.VITE_API_URL}/users/${friend.id}/image`}
+                    />
+                    <AvatarFallback>
+                      {friend.username.slice(0, 1).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
 
-                <span>{friend.username}</span>
-              </CardTitle>
-            </CardHeader>
-          </Card>
+                  <span>{friend.username}</span>
+                </CardTitle>
+              </CardHeader>
+            </Card>
+          </NewTransaction>
         ))}
       </div>
     </div>

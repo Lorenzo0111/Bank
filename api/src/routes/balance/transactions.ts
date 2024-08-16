@@ -1,8 +1,8 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import { prisma } from "../lib/prisma";
-import { type Variables, authenticated } from "../middlewares/auth";
-import { transactionSchema } from "../schemas";
+import { prisma } from "../../lib/prisma";
+import { type Variables, authenticated } from "../../middlewares/auth";
+import { transactionSchema } from "../../schemas";
 
 export const transactionsRoute = new Hono<{ Variables: Variables }>()
   .get("/", authenticated, async (ctx) => {
@@ -122,6 +122,20 @@ export const transactionsRoute = new Hono<{ Variables: Variables }>()
             balance: {
               increment: body.amount,
             },
+          },
+        }),
+
+        prisma.balanceSnapshot.create({
+          data: {
+            userId: user.id,
+            balance: user.balance.minus(body.amount),
+          },
+        }),
+
+        prisma.balanceSnapshot.create({
+          data: {
+            userId: target.id,
+            balance: target.balance.plus(body.amount),
           },
         }),
       ]);

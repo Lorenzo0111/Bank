@@ -14,3 +14,15 @@ model Transaction {
 
     @@map("transactions")
 }
+
+model BalanceSnapshot {
+    id String @id @default(cuid())
+
+    balance Decimal
+    date    DateTime @default(now())
+
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
+
+    @@map("balance_snapshots")
+}

@@ -13,7 +13,7 @@ function Logout() {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    queryClient.clear();
+    queryClient.invalidateQueries();
     logout();
     navigate({
       to: "/auth/login",
