@@ -5,6 +5,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import type { ReactNode } from "react";
 import {
   Area,
   AreaChart,
@@ -15,11 +16,12 @@ import {
 } from "recharts";
 
 export type ChartProps = {
-  title: string;
+  title: string | ReactNode;
   data: {
     [key: string]: string | number;
   }[];
   keys: string[];
+  dataKey: string;
   config: ChartConfig;
 };
 
@@ -67,7 +69,7 @@ export function LineChart(props: ChartProps) {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey={props.dataKey}
               tickLine={false}
               axisLine={false}
               tickMargin={8}

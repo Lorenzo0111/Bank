@@ -1,7 +1,6 @@
 import { honoClient } from "@/lib/fetcher";
 import { useQueryClient } from "@tanstack/react-query";
 import type { ReactNode } from "react";
-import { useSession } from "../contexts/SessionContext";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -20,7 +19,6 @@ export function NewTransaction({
   children,
   target,
 }: { children?: ReactNode; target?: string }) {
-  const { refetch } = useSession();
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -44,23 +42,20 @@ export function NewTransaction({
             e.preventDefault();
 
             const form = new FormData(e.target as HTMLFormElement);
-            const target = form.get("target") as string;
+            const targetValue = target || (form.get("target") as string);
             const amount = form.get("amount") as string;
             const description = form.get("description") as string;
 
             try {
               await honoClient.balance.transactions.new.$post({
                 json: {
-                  target,
+                  target: targetValue,
                   amount: Number.parseInt(amount),
                   description,
                 },
               });
 
-              refetch();
-              queryClient.invalidateQueries({
-                queryKey: ["transactions"],
-              });
+              queryClient.invalidateQueries();
 
               toast({
                 title: "Transaction created",

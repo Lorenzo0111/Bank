@@ -20,7 +20,7 @@ function Index() {
   return (
     <div className="flex w-full flex-col gap-3 p-4">
       <div className="flex w-full gap-3">
-        <Card className="w-52">
+        <Card className="h-fit w-52">
           <CardHeader>
             <CardTitle>€{session?.balance || 0}</CardTitle>
             <CardDescription>Current balance</CardDescription>
