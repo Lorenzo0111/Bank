@@ -11,13 +11,6 @@ export const usersRoute = new Hono<{ Variables: Variables }>()
     const friends = await prisma.user.findUnique({
       where: { id: user.id },
       select: {
-        friendOf: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-          },
-        },
         friends: {
           select: {
             id: true,
@@ -30,12 +23,7 @@ export const usersRoute = new Hono<{ Variables: Variables }>()
 
     if (!friends) return ctx.json({ error: "User not found" }, 404);
 
-    let mergedFriends = [...friends.friendOf, ...friends.friends];
-    mergedFriends = mergedFriends.filter(
-      (v, i, a) => a.findIndex((t) => t.id === v.id) === i,
-    );
-
-    return ctx.json(mergedFriends);
+    return ctx.json(friends.friends);
   })
   .put("/friends/:id", authenticated, async (ctx) => {
     const user = ctx.get("user");

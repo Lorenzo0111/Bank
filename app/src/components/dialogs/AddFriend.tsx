@@ -45,21 +45,25 @@ export function AddFriend({
           <DialogClose asChild>
             <Button
               onClick={async () => {
-                const user = await honoClient.users.username[":username"].$get({
-                  param: { username },
-                });
-                const res = await user.json();
-                if ("error" in res) {
+                try {
+                  const user = await honoClient.users.username[
+                    ":username"
+                  ].$get({
+                    param: { username },
+                  });
+
+                  const res = await user.json();
+                  if ("error" in res) throw new Error("User not found");
+
+                  await honoClient.users.friends[":id"].$put({
+                    param: { id: res.id },
+                  });
+                } catch (_) {
                   toast({
                     description: "User not found",
                     variant: "destructive",
                   });
-                  return;
                 }
-
-                await honoClient.users.friends[":id"].$put({
-                  param: { id: res.id },
-                });
 
                 refetch();
               }}

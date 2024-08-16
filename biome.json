@@ -78,8 +78,7 @@
         "noUnreachableSuper": "off",
         "noUnusedImports": "warn"
       }
-    },
-    "ignore": ["**/dist/**", "app/src/routeTree.gen.ts"]
+    }
   },
   "javascript": {
     "formatter": {
@@ -99,5 +98,8 @@
     "enabled": true,
     "clientKind": "git",
     "useIgnoreFile": true
+  },
+  "files": {
+    "ignore": ["**/dist/**", "./app/src/routeTree.gen.ts"]
   }
 }
