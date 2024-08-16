@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const externalSchema = z.object({
+export const externalPaymentSchema = z.object({
   number: z.string().length(16),
   cvc: z.string().length(3),
   expiry: z
@@ -12,4 +12,4 @@ export const externalSchema = z.object({
   amount: z.number().positive(),
   target: z.string().min(1),
 });
-export type authorizeSchemaType = z.infer<typeof externalSchema>;
+export type authorizeSchemaType = z.infer<typeof externalPaymentSchema>;

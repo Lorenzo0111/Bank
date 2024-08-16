@@ -1,7 +1,9 @@
+import { zValidator } from "@hono/zod-validator";
 import { hashSync } from "@node-rs/argon2";
 import { Hono } from "hono";
 import { prisma } from "../lib/prisma";
 import { type Variables, authenticated } from "../middlewares/auth";
+import { updateCardSchema } from "../schemas";
 
 export const cardsRoute = new Hono<{ Variables: Variables }>()
   .get("/", authenticated, async (ctx) => {
@@ -50,6 +52,23 @@ export const cardsRoute = new Hono<{ Variables: Variables }>()
       expiry,
     });
   })
+  .patch(
+    "/:number",
+    authenticated,
+    zValidator("json", updateCardSchema),
+    async (ctx) => {
+      const user = ctx.get("user");
+      const number = ctx.req.param("number");
+      const body = ctx.req.valid("json");
+
+      await prisma.card.update({
+        where: { userId: user.id, number },
+        data: body,
+      });
+
+      return ctx.json({ success: true });
+    },
+  )
   .delete("/:number", authenticated, async (ctx) => {
     const user = ctx.get("user");
     const number = ctx.req.param("number");

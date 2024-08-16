@@ -25,6 +25,7 @@ function Cards() {
             number={card.number}
             name={card.name}
             expiry={card.expiry}
+            actions
             refetch={refetch}
           />
         ))}

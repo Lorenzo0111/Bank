@@ -2,11 +2,11 @@ import { zValidator } from "@hono/zod-validator";
 import { verifySync } from "@node-rs/argon2";
 import { Hono } from "hono";
 import { prisma } from "../lib/prisma";
-import { externalSchema } from "../schemas";
+import { externalPaymentSchema } from "../schemas";
 
 export const paymentsRoute = new Hono().post(
   "/external",
-  zValidator("json", externalSchema),
+  zValidator("json", externalPaymentSchema),
   async (ctx) => {
     const body = ctx.req.valid("json");
 
