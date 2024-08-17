@@ -16,7 +16,7 @@ function Cards() {
 
   return (
     <div className="flex w-full flex-col gap-3 p-4">
-      <AddCard />
+      <AddCard refetch={refetch} />
 
       <div className="flex flex-wrap gap-3">
         {data?.map((card) => (

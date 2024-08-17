@@ -15,7 +15,7 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
-export function AddCard() {
+export function AddCard({ refetch }: { refetch: () => void }) {
   const [card, setCard] = useState<InferResponseType<
     typeof honoClient.cards.new.$post
   > | null>(null);
@@ -28,6 +28,8 @@ export function AddCard() {
           const data = await res.json();
 
           setCard(data);
+
+          refetch();
         }}
         className="ml-auto w-1/4"
       >

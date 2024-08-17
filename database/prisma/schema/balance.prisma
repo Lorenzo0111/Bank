@@ -26,3 +26,16 @@ model BalanceSnapshot {
 
     @@map("balance_snapshots")
 }
+
+model SavingAccount {
+    id String @id @default(cuid())
+
+    name      String
+    balance   Decimal  @default(0)
+    updatedAt DateTime @updatedAt
+
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
+
+    @@map("saving_accounts")
+}

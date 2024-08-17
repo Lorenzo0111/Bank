@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { type FileRoutesByPath, useRouterState } from "@tanstack/react-router";
-import { CreditCard, Home, LogOut, Menu, Users } from "lucide-react";
+import { CreditCard, Home, Landmark, LogOut, Menu, Users } from "lucide-react";
 import { useMediaQuery } from "../hooks/use-media-query";
 import { Button, ButtonLink } from "./button";
 import {
@@ -86,6 +86,7 @@ export function SidebarContent({ loggedIn }: SidebarProps) {
       <SidebarLink href="/" icon={<Home size={24} />} />
       <SidebarLink href="/friends" icon={<Users size={24} />} />
       <SidebarLink href="/cards" icon={<CreditCard size={24} />} />
+      <SidebarLink href="/savings" icon={<Landmark size={24} />} />
 
       <ThemeSwitch className="mt-auto" />
       {loggedIn && (
