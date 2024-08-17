@@ -16,20 +16,16 @@ import { Route as rootRoute } from './routes/__root'
 
 // Create Virtual Routes
 
-const SavingsLazyImport = createFileRoute('/savings')()
 const FriendsLazyImport = createFileRoute('/friends')()
 const CardsLazyImport = createFileRoute('/cards')()
 const IndexLazyImport = createFileRoute('/')()
+const SavingsIndexLazyImport = createFileRoute('/savings/')()
+const SavingsIdLazyImport = createFileRoute('/savings/$id')()
 const AuthRegisterLazyImport = createFileRoute('/auth/register')()
 const AuthLogoutLazyImport = createFileRoute('/auth/logout')()
 const AuthLoginLazyImport = createFileRoute('/auth/login')()
 
 // Create/Update Routes
-
-const SavingsLazyRoute = SavingsLazyImport.update({
-  path: '/savings',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/savings.lazy').then((d) => d.Route))
 
 const FriendsLazyRoute = FriendsLazyImport.update({
   path: '/friends',
@@ -45,6 +41,16 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const SavingsIndexLazyRoute = SavingsIndexLazyImport.update({
+  path: '/savings/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/savings/index.lazy').then((d) => d.Route))
+
+const SavingsIdLazyRoute = SavingsIdLazyImport.update({
+  path: '/savings/$id',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/savings/$id.lazy').then((d) => d.Route))
 
 const AuthRegisterLazyRoute = AuthRegisterLazyImport.update({
   path: '/auth/register',
@@ -86,13 +92,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FriendsLazyImport
       parentRoute: typeof rootRoute
     }
-    '/savings': {
-      id: '/savings'
-      path: '/savings'
-      fullPath: '/savings'
-      preLoaderRoute: typeof SavingsLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/auth/login': {
       id: '/auth/login'
       path: '/auth/login'
@@ -114,6 +113,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRegisterLazyImport
       parentRoute: typeof rootRoute
     }
+    '/savings/$id': {
+      id: '/savings/$id'
+      path: '/savings/$id'
+      fullPath: '/savings/$id'
+      preLoaderRoute: typeof SavingsIdLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/savings/': {
+      id: '/savings/'
+      path: '/savings'
+      fullPath: '/savings'
+      preLoaderRoute: typeof SavingsIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -123,10 +136,11 @@ export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   CardsLazyRoute,
   FriendsLazyRoute,
-  SavingsLazyRoute,
   AuthLoginLazyRoute,
   AuthLogoutLazyRoute,
   AuthRegisterLazyRoute,
+  SavingsIdLazyRoute,
+  SavingsIndexLazyRoute,
 })
 
 /* prettier-ignore-end */
@@ -140,10 +154,11 @@ export const routeTree = rootRoute.addChildren({
         "/",
         "/cards",
         "/friends",
-        "/savings",
         "/auth/login",
         "/auth/logout",
-        "/auth/register"
+        "/auth/register",
+        "/savings/$id",
+        "/savings/"
       ]
     },
     "/": {
@@ -155,9 +170,6 @@ export const routeTree = rootRoute.addChildren({
     "/friends": {
       "filePath": "friends.lazy.tsx"
     },
-    "/savings": {
-      "filePath": "savings.lazy.tsx"
-    },
     "/auth/login": {
       "filePath": "auth/login.lazy.tsx"
     },
@@ -166,6 +178,12 @@ export const routeTree = rootRoute.addChildren({
     },
     "/auth/register": {
       "filePath": "auth/register.lazy.tsx"
+    },
+    "/savings/$id": {
+      "filePath": "savings/$id.lazy.tsx"
+    },
+    "/savings/": {
+      "filePath": "savings/index.lazy.tsx"
     }
   }
 }
